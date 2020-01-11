@@ -25,6 +25,9 @@ S_train_accuracy = []
 S_train_error = []
 S_train_loss = []
 
+GD_test = [] 
+S_test = []
+
 for i in range(epochs):
     '''
     for j in range(sample_size//batch_size):
@@ -72,22 +75,21 @@ for i in range(epochs):
     S_train_accuracy.append(S_precision)
     S_train_error.append(S_error)
 
-out_precision = np.where(sigmoid(np.dot(test_data[:,:-1],w_initial)) >0.5, 1 ,-1)
-out_precision = np.average(out_precision == test_data[:,-1])    
-print('GD test accuracy', out_precision )
+    #GD test
+    out_precision = np.where(sigmoid(np.dot(test_data[:,:-1],w_initial)) >0.5, 1 ,-1)
+    out_precision = np.average(out_precision == test_data[:,-1])
+    GD_test.append(out_precision)    
 
-S_out_precision = np.where(sigmoid(np.dot(test_data[:,:-1],S_w_initial)) >0.5, 1 ,-1)
-S_out_precision = np.average(S_out_precision == test_data[:,-1])   
-print('SGD test accuracy', S_out_precision )
+    #SGD test
+    S_out_precision = np.where(sigmoid(np.dot(test_data[:,:-1],S_w_initial)) >0.5, 1 ,-1)
+    S_out_precision = np.average(S_out_precision == test_data[:,-1])   
+    S_test.append(S_out_precision)
 
 
-'''
-x_seq = [n for n in range(2000)]
-plt.xticks(x_seq)
-'''
+# GD and loss
 plt.figure()
-plt.plot(GD_train_accuracy,'g-',label="accuracy" )
-plt.plot(GD_train_loss,'b-', label = "loss")
+plt.plot(GD_train_accuracy,'g-',label="GD accuracy" )
+plt.plot(GD_train_loss,'b-', label = "GD loss")
 plt.title("Training precision and error rate")
 plt.xlabel("T")
 plt.ylabel("value")
@@ -95,22 +97,44 @@ plt.legend(loc=0)
 plt.tick_params(axis='both', color='red')
 plt.show()
 
+#SGD and loss
+plt.figure()
+plt.plot(S_train_accuracy,'g-',label="SGD accuracy" )
+plt.plot(S_train_loss,'b-', label = "SGD loss")
+plt.title("Training precision and error rate")
+plt.xlabel("T")
+plt.ylabel("value")
+plt.legend(loc=0)
+plt.tick_params(axis='both', color='red')
+plt.show()
 
+#Ein GD vs SGD
 plt.figure()
 plt.plot(S_train_error,'g-', label = "SGD")
 plt.plot(GD_train_error,'b-', label = "GD")
-plt.title("Ein and Eout")
+plt.title("Ein GD and SGD")
 plt.xlabel("T")
 plt.ylabel("Ein")
 plt.legend(loc=0)
 plt.tick_params(axis='both', color='red')
 plt.show()
 
-
+#acc GD and SGD
 plt.figure()
 plt.plot(GD_train_accuracy,'g-',label="GD accuracy" )
 plt.plot(S_train_accuracy,'b-', label = "SGD accuracy")
 plt.title("GD and SGD accuracy")
+plt.xlabel("T")
+plt.ylabel("accuracy")
+plt.legend(loc=0)
+plt.tick_params(axis='both', color='red')
+plt.show()
+
+#test GD and SGD
+plt.figure()
+plt.plot(GD_test,'g-',label="test GD accuracy" )
+plt.plot(S_test,'b-', label = "test SGD accuracy")
+plt.title("Test GD and SGD accuracy")
 plt.xlabel("T")
 plt.ylabel("accuracy")
 plt.legend(loc=0)
