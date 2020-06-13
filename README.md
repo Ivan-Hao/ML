@@ -2,7 +2,7 @@
 NTUCSIE-MachineLearningFoundation
 =======================================
 ```
-*hw1
-*hw2
-*hw3
+Homework1
+Homework2
+Homework3
 ```
